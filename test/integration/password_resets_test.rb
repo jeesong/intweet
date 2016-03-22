@@ -23,7 +23,7 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     # password reset form
     user = assigns(:user)
     # wrong email
-    get  edit_password_reset_path(user.reset_token, email: "")
+    get edit_password_reset_path(user.reset_token, email: "")
     assert_redirected_to root_url
     # Inactive user
     user.toggle!(:activated)
@@ -56,6 +56,6 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
                 password_confirmation: "foobaz" }
     assert is_logged_in?
     assert_not flash.empty?
-    assert_redirected_to user 
+    assert_redirected_to user
   end
 end
