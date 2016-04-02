@@ -15,6 +15,7 @@ $gray-medium-light: #eaeaea;
 
 body {
   padding-top: 60px;
+  background-color: lightcyan;
 }
 
 section {
@@ -30,6 +31,10 @@ textarea {
   h1 {
     margin-bottom: 10px;
   }
+}
+
+.navbar-inverse {
+  background-color: skyblue;
 }
 
 // typography
@@ -175,6 +180,15 @@ aside {
 
 .user.follow {
   padding: 0;
+}
+
+.fixed {
+  position: fixed;
+  width: 27%;
+}
+
+.scroll {
+  float: right;
 }
 
 // forms
