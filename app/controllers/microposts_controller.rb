@@ -6,6 +6,7 @@ class MicropostsController < ApplicationController
     @micropost = current_user.microposts.build(micropost_params)
     if @micropost.save
       flash[:success] = "Micropost created!"
+      intercom_create_event(@micropost)
       redirect_to root_url
     else
       @feed_items = []
@@ -28,5 +29,14 @@ class MicropostsController < ApplicationController
       def correct_user
         @micropost = current_user.microposts.find_by(id: params[:id])
         redirect_to root_url if @micropost.nil?
+      end
+
+      def intercom_create_event(post)
+        intercom = Intercom::Client.new(app_id: ENV['INTERCOM_APP_ID'], api_key: ENV['INTERCOM_API_KEY'])
+        intercom.events.create(
+          event_name: "created-micropost",
+          created_at: Time.now.to_i,
+          email: post.user.email
+        )
       end
 end

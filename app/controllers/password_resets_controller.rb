@@ -10,7 +10,9 @@ class PasswordResetsController < ApplicationController
     @user = User.find_by(email: params[:password_reset][:email].downcase)
     if @user
       @user.create_reset_digest
-      @user.send_password_reset_email
+      password_reset_email(@user)
+      # SendGrid function
+      # @user.send_password_reset_email
       flash[:info] = "Email sent with password reset instruction"
       redirect_to root_url
     else
@@ -56,5 +58,24 @@ class PasswordResetsController < ApplicationController
         flash[:danger] = "Password reset has expired."
         redirect_to new_password_reset_url
       end
+    end
+
+    def password_reset_email(user)
+      intercom = Intercom::Client.new(app_id: ENV['INTERCOM_APP_ID'], api_key: ENV['INTERCOM_API_KEY'])
+      sleep(0.5)
+      intercom.messages.create({
+        message_type: 'email',
+        subject: 'Password Reset for Intweet',
+        body: "<p><b>Password Reset</b></p><p>To reset your password click the link below:</p><a href='https://localhost:3000/password_resets/" + user.reset_token + "/edit?email=" + CGI.escape(user.email) + "'>Reset Password</a><br><p>This link will expire in two hours.</p><p>If you did not request your password to be reset, pelase ignore this email and your password will stay as it is.</p>",
+        template: "plain",
+        from: {
+          type: "admin",
+          id: "26011"
+        },
+        to: {
+          type: "user",
+          email: user.email
+        }
+      })
     end
 end
