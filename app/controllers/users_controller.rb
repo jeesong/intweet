@@ -20,7 +20,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      @user.send_activation_email
+      activation_email(@user)
+      # @user.send_activation_email
       flash[:info] = "Please check your email to activate your account."
       redirect_to root_url
     else
@@ -75,5 +76,25 @@ class UsersController < ApplicationController
 
     def admin_user
       redirect_to(root_url) unless current_user.admin?
+    end
+
+    def activation_email(user)
+      intercom = Intercom::Client.new(app_id: ENV['INTERCOM_APP_ID'], api_key: ENV['INTERCOM_API_KEY'])
+      intercom.users.create(email: @user.email, name: @user.name, signed_up_at: @user.created_at, custom_attributes: { activated: false })
+      sleep(0.5)
+      intercom.messages.create({
+        message_type: 'email',
+        subject: 'Account Activation for Intweet',
+        body: "Hi " + @user.name + ",<br>Welcome to Intweet! Click on the link below to activate your account:<br><a href='https://localhost:3000/account_activations/" + @user.activation_token + "/edit?email=" + CGI.escape(@user.email) + "'>Activate</a>",
+        template: "plain",
+        from: {
+          type: "admin",
+          id: "26011"
+        },
+        to: {
+          type: "user",
+          email: @user.email
+        }
+      })
     end
 end

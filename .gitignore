@@ -21,3 +21,6 @@
 
 # Ignore uploaded test images.
 /public/uploads
+
+# Ignore dev environment configs
+/config/environments/development.rb
