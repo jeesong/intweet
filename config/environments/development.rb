@@ -41,6 +41,4 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-  ENV['INTERCOM_APP_ID'] = 'eaptokw4'
-  ENV['INTERCOM_API_KEY'] = '788b1ea81e324ee9c3db1b62c5093f055b5921bd'
 end
