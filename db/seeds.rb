@@ -4,9 +4,10 @@ User.create!(name: "Example User",
              password_confirmation: "foobar",
              admin: true,
              activated: true,
-             activated_at: Time.zone.now)
+             activated_at: Time.zone.now,
+             avatar: rand(1..129))
 
-99.times do |n|
+75.times do |n|
   name = Faker::Name.name
   email = "example-#{n+1}@test.org"
   password = "password"
@@ -15,7 +16,8 @@ User.create!(name: "Example User",
                password: password,
                password_confirmation: password,
                activated: true,
-               activated_at: Time.zone.now)
+               activated_at: Time.zone.now,
+               avatar: rand(1..129))
 end
 
 users = User.order(:created_at).take(6)
