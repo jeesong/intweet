@@ -1,4 +1,6 @@
 class HooksController < ApplicationController
+  skip_before_filter :verify_authenticity_token
+
   def note_created_callback
     # render text: "Thanks for sending POST request"
     # data = JSON.parse request.body.read
