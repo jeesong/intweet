@@ -2,26 +2,19 @@ class HooksController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
   def note_created_callback
-    # render text: "Thanks for sending POST request"
-    # data = JSON.parse request.body.read
-
     request.body.rewind
     if request.body.present?
       notification = JSON.parse(request.body.read)
-      webhook_note = WebhookNote.new(payload: notification["data"]["item"]["links"]["conversation_web"])
-      # webhook_note = WebhookNote.new(payload: request.body.read)
+      webhook_note = WebhookNote.new(
+        link: notification["data"]["item"]["links"]["conversation_web"],
+        body: notification["date"]["item"]["conversation_parts"]["conversation_parts"][0]["body"],
+        name: notification["date"]["item"]["user"]["name"],
+        email: notification["date"]["item"]["user"]["email"],
+        requested_at: notification["date"]["item"]["conversation_parts"]["conversation_parts"][0]["created_at"]
+      )
       webhook_note.save!
     end
     render :nothing => true
-
-    # @webhook_note = WebhookNote.new(payload: request.body.read)
-    # if @webhook_note.save
-    #   render json: @webhook_note, status: :created
-    # else
-    #   render json: @webhook_note.errors, status: :unprocessable_entity
-    # end
-    # render :index
-    # or save the request into a model & render nothing
   end
 
   def index

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414031629) do
+ActiveRecord::Schema.define(version: 20160422230253) do
 
   create_table "microposts", force: :cascade do |t|
     t.text     "content"
@@ -55,9 +55,13 @@ ActiveRecord::Schema.define(version: 20160414031629) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true
 
   create_table "webhook_notes", force: :cascade do |t|
-    t.text     "payload"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.text     "body"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "link"
+    t.string   "name"
+    t.string   "email"
+    t.integer  "requested_at"
   end
 
 end
