@@ -7,10 +7,10 @@ class HooksController < ApplicationController
       notification = JSON.parse(request.body.read)
       webhook_note = WebhookNote.new(
         link: notification["data"]["item"]["links"]["conversation_web"],
-        body: notification["date"]["item"]["conversation_parts"]["conversation_parts"][0]["body"],
-        name: notification["date"]["item"]["user"]["name"],
-        email: notification["date"]["item"]["user"]["email"],
-        requested_at: notification["date"]["item"]["conversation_parts"]["conversation_parts"][0]["created_at"]
+        body: notification["data"]["item"]["conversation_parts"]["conversation_parts"][0]["body"],
+        name: notification["data"]["item"]["user"]["name"],
+        email: notification["data"]["item"]["user"]["email"],
+        requested_at: notification["data"]["item"]["conversation_parts"]["conversation_parts"][0]["created_at"]
       )
       webhook_note.save!
     end
