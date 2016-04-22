@@ -1,15 +1,14 @@
 class HooksController < ApplicationController
   def note_created_callback
     # render text: "Thanks for sending POST request"
-    request.body.rewind
-    puts request.body.read
     # data = JSON.parse request.body.read
 
-    # if request.body.present?
-    #   webhook_note = WebhookNote.new(payload: request.body.read)
-    #   webhook_note.save!
-    # end
-    # render :nothing => true
+    request.body.rewind
+    if request.body.present?
+      webhook_note = WebhookNote.new(payload: request.body.read)
+      webhook_note.save!
+    end
+    render :nothing => true
 
     # @webhook_note = WebhookNote.new(payload: request.body.read)
     # if @webhook_note.save
@@ -22,7 +21,6 @@ class HooksController < ApplicationController
   end
 
   def index
-    # show the model
     @webhook_note_requests = WebhookNote.all
   end
 end
