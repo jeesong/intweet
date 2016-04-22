@@ -7,7 +7,9 @@ class HooksController < ApplicationController
 
     request.body.rewind
     if request.body.present?
-      webhook_note = WebhookNote.new(payload: request.body.read)
+      notification = JSON.parse(request.body.read)
+      webhook_note = WebhookNote.new(payload: notification["data"]["item"]["links"]["conversation_web"])
+      # webhook_note = WebhookNote.new(payload: request.body.read)
       webhook_note.save!
     end
     render :nothing => true
