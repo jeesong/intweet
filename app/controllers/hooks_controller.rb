@@ -5,12 +5,13 @@ class HooksController < ApplicationController
     request.body.rewind
     if request.body.present?
       notification = JSON.parse(request.body.read)
-      notification["data"]["item"]["user"]["name"].empty?
+      name = notification["data"]["item"]["user"]["name"] == "" ? "Lead" : notification["data"]["item"]["user"]["name"]
+      email = notification["data"]["item"]["user"]["email"] == "" ? "No email" : : notification["data"]["item"]["user"]["email"
       webhook_note = WebhookNote.new(
         link: notification["data"]["item"]["links"]["conversation_web"],
         body: notification["data"]["item"]["conversation_parts"]["conversation_parts"][0]["body"],
-        name: notification["data"]["item"]["user"]["name"].empty? ? "Lead" : notification["data"]["item"]["user"]["name"],
-        email: notification["data"]["item"]["user"]["email"].empty? ? "No email" : notification["data"]["item"]["user"]["email"],
+        name: name,
+        email: email,
         requested_at: notification["data"]["item"]["conversation_parts"]["conversation_parts"][0]["created_at"]
       )
       webhook_note.save!
