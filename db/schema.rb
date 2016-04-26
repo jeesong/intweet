@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160422230253) do
+ActiveRecord::Schema.define(version: 20160425234732) do
 
   create_table "microposts", force: :cascade do |t|
     t.text     "content"
@@ -62,6 +62,12 @@ ActiveRecord::Schema.define(version: 20160422230253) do
     t.string   "name"
     t.string   "email"
     t.integer  "requested_at"
+    t.text     "category"
+    t.boolean  "acquire"
+    t.boolean  "engage"
+    t.boolean  "learn"
+    t.boolean  "platform"
+    t.boolean  "support"
   end
 
 end
