@@ -8,29 +8,24 @@ class HooksController < ApplicationController
     body = notification["data"]["item"]["conversation_parts"]["conversation_parts"][0]["body"]
     name = notification["data"]["item"]["user"]["name"] == nil ? "Lead" : notification["data"]["item"]["user"]["name"]
     email = notification["data"]["item"]["user"]["email"] == "" ? "No email" : notification["data"]["item"]["user"]["email"]
+    webhook_note = WebhookNote.new
+    webhook_note.link = notification["data"]["item"]["links"]["conversation_web"]
+    webhook_note.body = body
+    webhook_note.name = name
+    webhook_note.email = email
+    webhook_note.requested_at = notification["data"]["item"]["conversation_parts"]["conversation_parts"][0]["created_at"]
     if body.include?("#bug")
-      webhook_note = WebhookNote.new
       webhook_note.category = "BUG"
-      webhook_note.link = notification["data"]["item"]["links"]["conversation_web"]
-      webhook_note.body = body
-      webhook_note.name = name
-      webhook_note.email = email
-      webhook_note.requested_at = notification["data"]["item"]["conversation_parts"]["conversation_parts"][0]["created_at"]
       webhook_note.save!
     elsif body.include?("#feature request")
-      webhook_note = WebhookNote.new
       webhook_note.category = "FR"
-      webhook_note.link = notification["data"]["item"]["links"]["conversation_web"]
-      webhook_note.body = body
-      webhook_note.name = name
-      webhook_note.email = email
-      webhook_note.requested_at = notification["data"]["item"]["conversation_parts"]["conversation_parts"][0]["created_at"]
       webhook_note.save!
     end
     # check body to see product -> set product(s)
     if body.include?("acquire")
-      webhook_note.acquire = true
-      webhook_note.save!
+      webhook_note.update_attribute(:acquire, true)
+      # webhook_note.acquire = true
+      # webhook_note.save!
     end
     if body.include?("engage")
       webhook_note.engage = true
