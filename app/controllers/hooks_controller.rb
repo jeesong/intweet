@@ -24,24 +24,18 @@ class HooksController < ApplicationController
     # check body to see product -> set product(s)
     if body.include?("acquire")
       webhook_note.update_attribute(:acquire, true)
-      # webhook_note.acquire = true
-      # webhook_note.save!
     end
     if body.include?("engage")
-      webhook_note.engage = true
-      webhook_note.save!
+      webhook_note.update_attribute(:engage, true)
     end
     if body.include?("learn")
-      webhook_note.learn = true
-      webhook_note.save!
+      webhook_note.update_attribute(:learn, true)
     end
     if body.include?("platform")
-      webhook_note.platform = true
-      webhook_note.save!
+      webhook_note.update_attribute(:platform, true)
     end
     if body.include?("support")
-      webhook_note.support = true
-      webhook_note.save!
+      webhook_note.update_attribute(:support, true)
     end
     render :nothing => true
   end
